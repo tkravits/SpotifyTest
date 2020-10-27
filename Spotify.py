@@ -20,16 +20,19 @@ df_yr_count = df.groupby(['year']).agg(['count'])
 
 df['popular_check'] = df['popularity'].apply(lambda x: x > 75)
 
-pop_check_years = df.groupby(['popular_check', 'year']).size().unstack()
+pop_check_years = df.groupby(['popular_check', 'year'])\
+    .size()\
+    .unstack()
+
 df_pop_check_yr = pop_check_years.loc[True].T
 
-prolific_artists = df.groupby(['artists']).size().sort_values(ascending=False)
+prolific_artists = df.groupby(['artists']).size()\
+    .sort_values(ascending=False)
 
-table = df.groupby(["artists","popular_check"]).size()\
-          .unstack(fill_value=0)\
-          .rename_axis(None, axis=1)\
-          .reset_index()\
-          .sort_values(by=True, ascending=False)
+popular_artists = df.groupby(['artists','popular_check']).size()\
+    .unstack(fill_value=0)\
+    .sort_values(by=True, ascending=False)
+
 # Use Pandas correlation library to create an initial correlation matrix
 corr = df.corr()
 
